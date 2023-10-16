@@ -1,25 +1,25 @@
 import { galleryItems } from './gallery-items.js';
 
-const ul = document.querySelector('.gallery');
+const gallery = document.querySelector('.gallery');
 
 galleryItems.forEach(function ({ preview, original, description }) {
-  const li = document.createElement('li');
-  li.classList.add('gallery__item');
-  const a = document.createElement('a');
-  a.classList.add('gallery__link');
-  a.href = original;
-  const img = document.createElement('img');
-  img.classList.add('gallery__image');
-  img.src = preview;
-  img.dataSource = original;
-  img.alt = description;
+  const galleryItem = document.createElement('li');
+  galleryItem.classList.add('gallery__item');
+  const galleryLink = document.createElement('a');
+  galleryLink.classList.add('gallery__link');
+  galleryLink.href = original;
+  const galleryImage = document.createElement('img');
+  galleryImage.classList.add('gallery__image');
+  galleryImage.src = preview;
+  galleryImage.dataSource = original;
+  galleryImage.alt = description;
 
-  ul.appendChild(li);
-  li.appendChild(a);
-  a.appendChild(img);
+  gallery.appendChild(galleryItem);
+  galleryItem.appendChild(galleryLink);
+  galleryLink.appendChild(galleryImage);
 });
 
-ul.addEventListener('click', openOriginalIMG);
+gallery.addEventListener('click', openOriginalIMG);
 
 function openOriginalIMG(e) {
   e.preventDefault();

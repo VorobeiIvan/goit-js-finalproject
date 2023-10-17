@@ -1,42 +1,49 @@
 import { galleryItems } from './gallery-items.js';
 
 const gallery = document.querySelector('.gallery');
+const galleryImages = document.querySelectorAll('.gallery__image');
 
-galleryItems.forEach(function ({ preview, original, description }) {
-  const galleryItem = document.createElement('li');
-  galleryItem.classList.add('gallery__item');
-  const galleryLink = document.createElement('a');
-  galleryLink.classList.add('gallery__link');
-  galleryLink.href = original;
-  const galleryImage = document.createElement('img');
-  galleryImage.classList.add('gallery__image');
-  galleryImage.src = preview;
-  galleryImage.dataSource = original;
-  galleryImage.alt = description;
+function createMarkup(galleryItems) {
+  return galleryItems
+    .map(
+      ({ preview, original, description }) => `
+      <li class="gallery__item">
+        <a class="gallery__link" href="${original}">
+          <img
+            class="gallery__image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
+          />
+        </a>
+      </li>`
+    )
+    .join('');
+}
 
-  gallery.appendChild(galleryItem);
-  galleryItem.appendChild(galleryLink);
-  galleryLink.appendChild(galleryImage);
-});
+gallery.innerHTML = createMarkup(galleryItems);
 
 gallery.addEventListener('click', openOriginalIMG);
-
+let modalOpen = false;
+let instance;
 function openOriginalIMG(e) {
   e.preventDefault();
-  const imgOriginal = e.target.dataSource;
-  const instance = basicLightbox.create(`
-    <img src="${imgOriginal}" width="800" height="600">
-`);
+
+  const imgOriginal = e.target.closest('.gallery__link');
+
+  instance = basicLightbox.create(`
+    <img src="${imgOriginal.getAttribute('href')}" width="800" height="600">
+  `);
 
   instance.show();
+  modalOpen = true;
+  document.addEventListener('keydown', closeModal);
+}
 
-  function closeModal() {
+function closeModal(event) {
+  if (event.key === 'Escape' && modalOpen) {
     instance.close();
+    modalOpen = false;
+    document.removeEventListener('keydown', closeModal);
   }
-
-  document.addEventListener('keyup', e => {
-    if (e.key === 'Escape' || e.key === 'Enter') {
-      closeModal();
-    }
-  });
 }

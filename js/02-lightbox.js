@@ -22,14 +22,9 @@ function createMarkup(galleryItems) {
 
 gallery.innerHTML = createMarkup(galleryItems);
 
-gallery.addEventListener('click', openOriginalIMG);
-
-function openOriginalIMG(e) {
-  e.preventDefault();
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captions: true,
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 250,
-  });
-}
+const lightbox = new SimpleLightbox('.gallery a', {
+  captions: true,
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});
